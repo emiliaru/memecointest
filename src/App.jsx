@@ -6,13 +6,29 @@ import WalletConnect from './components/WalletConnect'
 function App() {
   const [walletAddress, setWalletAddress] = useState(null)
   const [walletBalance, setWalletBalance] = useState(5.0) // Fake balance in SOL
+  const [totalEarned, setTotalEarned] = useState(0)
+  const [totalSpent, setTotalSpent] = useState(0)
 
   const handleWalletConnect = (address) => {
     setWalletAddress(address)
     if (address) {
-      // Simulate random balance between 2-10 SOL
-      setWalletBalance(Math.random() * 8 + 2)
+      // Simulate random balance between 5-15 SOL
+      setWalletBalance(Math.random() * 10 + 5)
+    } else {
+      // Reset on disconnect
+      setTotalEarned(0)
+      setTotalSpent(0)
     }
+  }
+
+  const handleSpinPayment = (cost) => {
+    setWalletBalance(prev => prev - cost)
+    setTotalSpent(prev => prev + cost)
+  }
+
+  const handleWinPayout = (amount) => {
+    setWalletBalance(prev => prev + amount)
+    setTotalEarned(prev => prev + amount)
   }
 
   return (
@@ -24,7 +40,14 @@ function App() {
         balance={walletBalance}
       />
       <Hero />
-      <SpinGame />
+      <SpinGame 
+        walletConnected={!!walletAddress}
+        walletBalance={walletBalance}
+        onSpinPayment={handleSpinPayment}
+        onWinPayout={handleWinPayout}
+        totalEarned={totalEarned}
+        totalSpent={totalSpent}
+      />
       
       <footer className="bg-black/30 backdrop-blur-md border-t border-white/10 py-8 mt-16">
         <div className="container mx-auto px-4 text-center">

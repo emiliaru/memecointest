@@ -11,19 +11,34 @@ const prizes = [
   { emoji: '🐧', name: 'PENGU', symbol: 'PENGU', value: 15000, solValue: 0.25, color: 'from-cyan-400 to-blue-400' },
 ]
 
-function SpinGame() {
+function SpinGame({ walletConnected, walletBalance, onSpinPayment, onWinPayout, totalEarned, totalSpent }) {
   const [spinning, setSpinning] = useState(false)
   const [result, setResult] = useState(null)
-  const [coins, setCoins] = useState(1000)
-  const [totalWon, setTotalWon] = useState(0)
   const [slots, setSlots] = useState([prizes[0], prizes[1], prizes[2]])
+  
+  const SPIN_COST = 0.01 // Cost in SOL per spin
+  const HOUSE_EDGE = 0.1 // 10% house edge for profit
 
   const spinSlots = () => {
-    if (spinning || coins < 100) return
+    if (spinning) return
+    
+    // Check if wallet is connected
+    if (!walletConnected) {
+      setResult({ message: '❌ Please connect your wallet first!', winAmount: 0 })
+      return
+    }
+    
+    // Check if enough balance
+    if (walletBalance < SPIN_COST) {
+      setResult({ message: '❌ Insufficient balance! Need at least 0.01 SOL', winAmount: 0 })
+      return
+    }
 
     setSpinning(true)
     setResult(null)
-    setCoins(coins - 100)
+    
+    // Charge for spin
+    onSpinPayment(SPIN_COST)
 
     let spinCount = 0
     const spinInterval = setInterval(() => {
@@ -54,20 +69,22 @@ function SpinGame() {
 
         if (allSame) {
           const prize = finalSlots[0]
-          winAmount = prize.value * 3
-          const solWin = prize.solValue * 3
-          message = `🎉 JACKPOT! Triple ${prize.symbol}! Won ${prize.value * 3} ${prize.symbol} (${solWin.toFixed(2)} SOL)!`
+          const solWin = (prize.solValue * 3) * (1 - HOUSE_EDGE) // Apply house edge
+          winAmount = solWin
+          message = `🎉 JACKPOT! Triple ${prize.symbol}! Won ${prize.value * 3} ${prize.symbol} (+${solWin.toFixed(4)} SOL)!`
+          onWinPayout(solWin)
         } else if (twoSame) {
           const matchedPrize = finalSlots[0].name === finalSlots[1].name ? finalSlots[0] : 
                                finalSlots[1].name === finalSlots[2].name ? finalSlots[1] : finalSlots[0]
-          winAmount = matchedPrize.value
-          message = `✨ Nice! Double ${matchedPrize.symbol}! Won ${matchedPrize.value} ${matchedPrize.symbol} (${matchedPrize.solValue.toFixed(2)} SOL)!`
+          const solWin = matchedPrize.solValue * (1 - HOUSE_EDGE) // Apply house edge
+          winAmount = solWin
+          message = `✨ Nice! Double ${matchedPrize.symbol}! Won ${matchedPrize.value} ${matchedPrize.symbol} (+${solWin.toFixed(4)} SOL)!`
+          onWinPayout(solWin)
         } else {
           message = '😢 Try again! Better luck next time!'
+          winAmount = 0
         }
 
-        setCoins(coins - 100 + winAmount)
-        setTotalWon(totalWon + winAmount)
         setResult({ message, winAmount })
         setSpinning(false)
       }
@@ -82,26 +99,41 @@ function SpinGame() {
             🎰 Memecoin Roulette 🎰
           </h2>
           <p className="text-white/80 text-xl mb-3">
-            Spin the slots and win real Solana memecoins! 100 coins per spin
+            Pay 0.01 SOL per spin and win real Solana memecoins!
           </p>
           <div className="inline-block bg-gradient-to-r from-green-500/20 to-emerald-500/20 border-2 border-green-400/50 rounded-full px-6 py-2">
             <p className="text-green-300 text-sm font-semibold">
-              🎮 DEMO MODE - Connect wallet to play with real tokens
+              💰 0.01 SOL per spin | 10% house edge
             </p>
           </div>
         </div>
 
         <div className="bg-gradient-to-br from-purple-800/50 to-blue-800/50 backdrop-blur-xl rounded-3xl p-8 border-4 border-yellow-400/50 shadow-2xl">
-          <div className="flex justify-between items-center mb-8">
-            <div className="bg-black/30 rounded-2xl px-6 py-3 border-2 border-yellow-400/50">
-              <p className="text-yellow-400 text-sm font-semibold">Your Balance</p>
-              <p className="text-white text-3xl font-bold">{coins} 🪙</p>
+          {walletConnected ? (
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+              <div className="bg-black/30 rounded-2xl px-6 py-3 border-2 border-blue-400/50">
+                <p className="text-blue-400 text-sm font-semibold">Wallet Balance</p>
+                <p className="text-white text-2xl font-bold">{walletBalance.toFixed(4)} SOL</p>
+                <p className="text-white/60 text-xs">≈ ${(walletBalance * 180).toFixed(2)} USD</p>
+              </div>
+              <div className="bg-black/30 rounded-2xl px-6 py-3 border-2 border-green-400/50">
+                <p className="text-green-400 text-sm font-semibold">Total Earned</p>
+                <p className="text-white text-2xl font-bold">+{totalEarned.toFixed(4)} SOL</p>
+                <p className="text-white/60 text-xs">≈ ${(totalEarned * 180).toFixed(2)} USD</p>
+              </div>
+              <div className="bg-black/30 rounded-2xl px-6 py-3 border-2 border-red-400/50">
+                <p className="text-red-400 text-sm font-semibold">Total Spent</p>
+                <p className="text-white text-2xl font-bold">-{totalSpent.toFixed(4)} SOL</p>
+                <p className="text-white/60 text-xs">≈ ${(totalSpent * 180).toFixed(2)} USD</p>
+              </div>
             </div>
-            <div className="bg-black/30 rounded-2xl px-6 py-3 border-2 border-green-400/50">
-              <p className="text-green-400 text-sm font-semibold">Total Won</p>
-              <p className="text-white text-3xl font-bold">{totalWon} 🪙</p>
+          ) : (
+            <div className="mb-8 p-6 bg-yellow-500/20 border-2 border-yellow-400/50 rounded-2xl text-center">
+              <p className="text-yellow-300 text-lg font-semibold">
+                👛 Connect your wallet to start playing!
+              </p>
             </div>
-          </div>
+          )}
 
           <div className="grid grid-cols-3 gap-4 mb-8">
             {slots.map((slot, index) => (
@@ -131,23 +163,28 @@ function SpinGame() {
 
           <button
             onClick={spinSlots}
-            disabled={spinning || coins < 100}
+            disabled={spinning || !walletConnected || walletBalance < SPIN_COST}
             className={`w-full py-6 rounded-2xl font-bold text-2xl transform transition-all duration-300 ${
-              spinning || coins < 100
+              spinning || !walletConnected || walletBalance < SPIN_COST
                 ? 'bg-gray-600 cursor-not-allowed opacity-50'
                 : 'bg-gradient-to-r from-yellow-400 via-orange-500 to-pink-500 hover:from-yellow-500 hover:via-orange-600 hover:to-pink-600 hover:scale-105 shadow-2xl'
             } text-white`}
           >
-            {spinning ? '🎰 SPINNING... 🎰' : coins < 100 ? '❌ Not Enough Coins' : '🎰 SPIN NOW! (100 coins) 🎰'}
+            {spinning 
+              ? '🎰 SPINNING... 🎰' 
+              : !walletConnected 
+              ? '👛 Connect Wallet First' 
+              : walletBalance < SPIN_COST 
+              ? '❌ Insufficient Balance' 
+              : `🎰 SPIN NOW! (${SPIN_COST} SOL) 🎰`}
           </button>
 
-          {coins < 100 && (
-            <button
-              onClick={() => setCoins(1000)}
-              className="w-full mt-4 py-4 rounded-2xl font-bold text-xl bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 text-white transform hover:scale-105 transition-all duration-300"
-            >
-              🎁 Get Free Coins (1000) 🎁
-            </button>
+          {walletConnected && walletBalance < SPIN_COST && (
+            <div className="mt-4 p-4 bg-red-500/20 border-2 border-red-400/50 rounded-2xl text-center">
+              <p className="text-red-300 text-sm font-semibold">
+                ⚠️ You need at least {SPIN_COST} SOL to spin. Disconnect and reconnect wallet to get new balance.
+              </p>
+            </div>
           )}
         </div>
 
@@ -166,8 +203,11 @@ function SpinGame() {
           <p className="text-white/60 text-center mt-4 text-sm">
             💡 Match 3 symbols for 3x multiplier! Match 2 for base value!
           </p>
-          <p className="text-green-400 text-center mt-2 text-xs font-semibold">
-            🎮 Demo Mode - Tokens are simulated for testing purposes
+          <p className="text-yellow-400 text-center mt-2 text-xs font-semibold">
+            💰 House Edge: 10% | Cost: 0.01 SOL per spin
+          </p>
+          <p className="text-green-400 text-center mt-1 text-xs font-semibold">
+            🎮 Demo Mode - Fake wallet for testing. Payouts are simulated.
           </p>
         </div>
       </div>
