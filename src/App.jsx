@@ -1,8 +1,6 @@
 import { useState } from 'react'
 import Hero from './components/Hero'
 import SpinGame from './components/SpinGame'
-import Tokenomics from './components/Tokenomics'
-import Footer from './components/Footer'
 import WalletConnect from './components/WalletConnect'
 
 function App() {
@@ -27,8 +25,17 @@ function App() {
       />
       <Hero />
       <SpinGame />
-      <Tokenomics />
-      <Footer />
+      
+      <footer className="bg-black/30 backdrop-blur-md border-t border-white/10 py-8 mt-16">
+        <div className="container mx-auto px-4 text-center">
+          <p className="text-white/60 mb-2">
+            ⚠️ Demo Mode: This is a simulation for entertainment purposes. Always DYOR!
+          </p>
+          <p className="text-white/50 text-sm">
+            © 2025 MOON COIN Roulette. Made with 💜
+          </p>
+        </div>
+      </footer>
     </div>
   )
 }
