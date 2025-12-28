@@ -1,10 +1,11 @@
-# 🌙 MOON COIN - Memecoin with Spin & Win Game 🎰
+# 🎰 MEMECOIN ROULETTE - Spin & Win Solana Memecoins 🎰
 
-Chwytliwy memecoin z interaktywną grą losującą w stylu Coin Master! 🚀
+Gra losująca z prawdziwymi nazwami Solana memecoinów! 🚀
 
 ## ✨ Features
 
-- 🎮 **Spin & Win Game** - Gra losująca z nagrodami (podobna do Coin Master)
+- 🎰 **Memecoin Roulette** - Gra losująca z prawdziwymi Solana memecoinami (BONK, PEPE, WIF, MYRO, etc.)
+- 👛 **Fake Wallet Connect** - Symulacja połączenia z walletem (demo mode)
 - 💎 **Beautiful UI** - Nowoczesny, responsywny design z Tailwind CSS
 - 🎨 **Animacje** - Płynne animacje i efekty wizualne
 - 📱 **Responsive** - Działa świetnie na wszystkich urządzeniach
@@ -12,10 +13,11 @@ Chwytliwy memecoin z interaktywną grą losującą w stylu Coin Master! 🚀
 
 ## 🎯 Jak grać?
 
-1. Kliknij "SPIN NOW!" aby zakręcić slotami (koszt: 100 monet)
-2. Dopasuj 3 takie same symbole = JACKPOT (3x wartość)
-3. Dopasuj 2 takie same symbole = wygrana (1x wartość)
-4. Zbieraj monety i baw się dobrze! 🎉
+1. Kliknij "Connect Wallet" aby połączyć fake wallet (demo)
+2. Kliknij "SPIN NOW!" aby zakręcić slotami (koszt: 100 monet)
+3. Dopasuj 3 takie same symbole = JACKPOT (3x wartość w tokenach + SOL)
+4. Dopasuj 2 takie same symbole = wygrana (1x wartość)
+5. Wygrywaj BONK, PEPE, WIF i inne popularne memecoiny! 🎉
 
 ## 🛠️ Instalacja i uruchomienie
 
@@ -106,4 +108,4 @@ MIT - Możesz używać tego projektu jak chcesz!
 
 ---
 
-Made with 💜 by the community | To the moon! 🚀🌙
+Made with 💜 | MEMECOIN ROULETTE 🎰🚀

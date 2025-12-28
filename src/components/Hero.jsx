@@ -18,21 +18,12 @@ function Hero() {
           </div>
           
           <h1 className="text-6xl md:text-8xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 via-pink-500 to-purple-500 mb-6 animate-pulse">
-            MOON COIN
+            MEMECOIN ROULETTE
           </h1>
           
-          <p className="text-xl md:text-3xl text-white/90 mb-8 font-semibold">
-            The Most Viral Memecoin in the Galaxy! 🌙
+          <p className="text-xl md:text-3xl text-white/90 mb-12 font-semibold">
+            Spin & Win Real Solana Memecoins! 🎰
           </p>
-          
-          <div className="flex flex-col md:flex-row gap-4 justify-center items-center mb-12">
-            <button className="bg-gradient-to-r from-yellow-400 to-orange-500 hover:from-yellow-500 hover:to-orange-600 text-black font-bold py-4 px-8 rounded-full text-xl transform hover:scale-110 transition-all duration-300 shadow-2xl">
-              Buy Now 💰
-            </button>
-            <button className="bg-white/10 hover:bg-white/20 text-white font-bold py-4 px-8 rounded-full text-xl transform hover:scale-110 transition-all duration-300 backdrop-blur-sm border-2 border-white/30">
-              Chart 📊
-            </button>
-          </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto">
             <div className="bg-white/10 backdrop-blur-md rounded-2xl p-6 border border-white/20 hover:bg-white/20 transition-all duration-300 transform hover:scale-105">
