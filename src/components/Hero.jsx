@@ -22,7 +22,7 @@ function Hero() {
           </h1>
           
           <p className="text-xl md:text-3xl text-white/90 mb-8 font-semibold">
-            The Most Chwytliwy Memecoin in the Galaxy! 🌙
+            The Most Viral Memecoin in the Galaxy! 🌙
           </p>
           
           <div className="flex flex-col md:flex-row gap-4 justify-center items-center mb-12">
