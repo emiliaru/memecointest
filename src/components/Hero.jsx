@@ -14,7 +14,7 @@ function Hero() {
       <div className={`container mx-auto px-4 py-20 transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
         <div className="text-center">
           <div className="inline-block mb-8">
-            <div className="text-8xl animate-bounce-slow">🚀</div>
+            <div className="text-8xl animate-bounce-slow">🎰</div>
           </div>
           
           <h1 className="text-6xl md:text-8xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 via-pink-500 to-purple-500 mb-6 animate-pulse">
